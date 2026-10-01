@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📝 听写专项测试 · 合集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+       /* ===== 全局重置 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(145deg, #fafffe 0%, #e4f5ef 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    color: #1a2639;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ===== 听写风格背景装饰 ===== */
+body::before {
+    content: '✍ ✎ ✏ ✐ ✑ ✒ 🖊 🖋 🖌 🖍';
+    position: fixed;
+    top: -5%;
+    right: -2%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 16vw;
+    color: rgba(0, 150, 136, 0.05);
+    pointer-events: none;
+    transform: rotate(6deg);
+    letter-spacing: 15px;
+    white-space: nowrap;
+    z-index: 0;
+    line-height: 1;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -15%;
+    left: -5%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(0, 200, 180, 0.05), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 网格装饰（笔记本线条，更淡） */
+.grid-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(0, 150, 136, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 150, 136, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+.container {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== 头部 ===== */
+.header {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #00796b 0%, #00b894 50%, #55d6be 80%, #9ce6d6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    display: inline-block;
+    position: relative;
+}
+
+.header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00b894, #55d6be, transparent);
+    border-radius: 4px;
+}
+
+.header p {
+    font-size: 1.1rem;
+    color: rgba(26, 38, 57, 0.40);
+    letter-spacing: 5px;
+    margin-top: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.header p span {
+    color: #00b894;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===== 卡片网格 ===== */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 150, 136, 0.10);
+    border-radius: 28px;
+    padding: 36px 28px 32px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 220%;
+    height: 220%;
+    background: radial-gradient(circle at 30% 40%, rgba(0, 200, 180, 0.06), transparent 60%);
+    pointer-events: none;
+    transition: 0.6s;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00b894, #55d6be, transparent);
+    opacity: 0;
+    transition: 0.4s;
+    border-radius: 28px 28px 0 0;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(0, 150, 136, 0.20);
+    box-shadow:
+        0 20px 60px rgba(0, 150, 136, 0.06),
+        0 8px 28px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+.card:hover::before {
+    transform: scale(1.3);
+}
+
+/* 卡片图标 */
+.card .icon {
+    font-size: 3.8rem;
+    margin-bottom: 14px;
+    display: inline-block;
+    filter: drop-shadow(0 2px 8px rgba(0, 150, 136, 0.06));
+    transition: 0.3s;
+}
+
+.card:hover .icon {
+    transform: scale(1.04) rotate(-2deg);
+}
+
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #1a2639;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.card .badge {
+    display: inline-block;
+    background: rgba(0, 150, 136, 0.06);
+    border: 1px solid rgba(0, 150, 136, 0.10);
+    border-radius: 40px;
+    padding: 4px 18px;
+    font-size: 0.72rem;
+    color: #00b894;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.card .desc {
+    font-size: 0.95rem;
+    color: rgba(26, 38, 57, 0.50);
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.card .desc strong {
+    color: #1a2639;
+    font-weight: 600;
+}
+
+.card .enter-btn {
+    margin-top: 20px;
+    padding: 10px 34px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #00796b, #00b894);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border: none;
+    transition: all 0.35s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 150, 136, 0.10);
+    display: inline-block;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.card .enter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: 0.5s;
+}
+
+.card:hover .enter-btn {
+    background: linear-gradient(135deg, #00b894, #00796b);
+    box-shadow: 0 8px 32px rgba(0, 150, 136, 0.20);
+    transform: scale(1.04);
+}
+
+.card:hover .enter-btn::before {
+    left: 100%;
+}
+
+/* ===== 底部 ===== */
+.footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(0, 150, 136, 0.06);
+    color: rgba(26, 38, 57, 0.18);
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 700px) {
+    .header h1 {
+        font-size: 2.6rem;
+    }
+    .header h1::after {
+        width: 50px;
+    }
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .card {
+        padding: 28px 20px;
+    }
+    body::before {
+        font-size: 24vw;
+        top: -4%;
+        right: -6%;
+        letter-spacing: 10px;
+    }
+    .footer {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    .header p {
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+    }
+    .card .icon {
+        font-size: 3rem;
+    }
+    .card h2 {
+        font-size: 1.4rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- 网格背景 -->
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1>✦ 听写测试 · 合集 ✦</h1>
+            <p>— <span>二</span> 套精选 · 一键挑战 —</p>
+        </header>
+
+        <!-- 卡片网格 -->
+        <div class="card-grid">
+            
+            <a href="BX-ONE/one.html" class="card" target="_blank">
+                <div class="icon">📝</div>
+                <h2>第一章</h2>
+                <div class="badge">听写 · 随机 30</div>
+                <div class="desc">
+                    <strong>基础专项</strong><br />
+                    常用词语 · 拼写训练
+                </div>
+                <span class="enter-btn">🚀 进入练习</span>
+            </a>
+         </div>
+
+        <!-- 底部 -->
+        <div class="footer">
+            <span>✧ 听写 · 精选习题 ✧</span>
+        </div>
+    </div>
+</body>
+</html>
